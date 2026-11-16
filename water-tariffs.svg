@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 255" role="img" aria-labelledby="title description">
+  <title id="title">How electricity prices affected the modeled water tariff</title>
+  <desc id="description">At SAR 0.22 and 0.28 per kilowatt-hour, Option A tariffs were 7.11 and 7.30 SAR per cubic metre. Fully expanded Option B tariffs were 7.49 and 7.67.</desc>
+  <g font-family="Inter, system-ui, sans-serif">
+    <text x="4.00" y="20.00" fill="#46596a" font-size="19" font-weight="660" text-anchor="start">Water tariff (SAR/m³)</text>
+    <line x1="44.00" y1="197.00" x2="408.00" y2="197.00" stroke="#dbe7e3" stroke-width="1"/>
+    <text x="36.00" y="202.20" fill="#46596a" font-size="19" font-weight="500" text-anchor="end">7.0</text>
+    <line x1="44.00" y1="157.25" x2="408.00" y2="157.25" stroke="#dbe7e3" stroke-width="1"/>
+    <text x="36.00" y="162.45" fill="#46596a" font-size="19" font-weight="500" text-anchor="end">7.2</text>
+    <line x1="44.00" y1="117.50" x2="408.00" y2="117.50" stroke="#dbe7e3" stroke-width="1"/>
+    <text x="36.00" y="122.70" fill="#46596a" font-size="19" font-weight="500" text-anchor="end">7.4</text>
+    <line x1="44.00" y1="77.75" x2="408.00" y2="77.75" stroke="#dbe7e3" stroke-width="1"/>
+    <text x="36.00" y="82.95" fill="#46596a" font-size="19" font-weight="500" text-anchor="end">7.6</text>
+    <line x1="44.00" y1="38.00" x2="408.00" y2="38.00" stroke="#dbe7e3" stroke-width="1"/>
+    <text x="36.00" y="43.20" fill="#46596a" font-size="19" font-weight="500" text-anchor="end">7.8</text>
+    <line x1="44.00" y1="38.00" x2="44.00" y2="197.00" stroke="#99aaa9" stroke-width="1"/>
+    <line x1="44.00" y1="197.00" x2="408.00" y2="197.00" stroke="#99aaa9" stroke-width="1"/>
+    <line x1="114.00" y1="197.00" x2="114.00" y2="203.00" stroke="#99aaa9" stroke-width="1"/>
+    <text x="114.00" y="221.00" fill="#16283c" font-size="19" font-weight="650" text-anchor="middle">0.22</text>
+    <line x1="344.00" y1="197.00" x2="344.00" y2="203.00" stroke="#99aaa9" stroke-width="1"/>
+    <text x="344.00" y="221.00" fill="#16283c" font-size="19" font-weight="650" text-anchor="middle">0.28</text>
+    <text x="226.00" y="247.00" fill="#46596a" font-size="19" font-weight="660" text-anchor="middle">Electricity price (SAR/kWh)</text>
+    <line x1="114.00" y1="175.68" x2="344.00" y2="137.52" stroke="#205f58" stroke-width="3.2"/>
+    <circle cx="114.00" cy="175.68" r="4.5" fill="#205f58"/>
+    <text x="114.00" y="165.68" fill="#205f58" font-size="21" font-weight="740" text-anchor="middle">7.11</text>
+    <circle cx="344.00" cy="137.52" r="4.5" fill="#205f58"/>
+    <text x="344.00" y="127.52" fill="#205f58" font-size="21" font-weight="740" text-anchor="middle">7.30</text>
+    <line x1="114.00" y1="99.46" x2="344.00" y2="63.09" stroke="#263e58" stroke-width="3.2" stroke-dasharray="8 5"/>
+    <rect x="109.75" y="95.21" width="8.5" height="8.5" fill="#263e58"/>
+    <text x="114.00" y="89.46" fill="#263e58" font-size="21" font-weight="740" text-anchor="middle">7.49</text>
+    <rect x="339.75" y="58.84" width="8.5" height="8.5" fill="#263e58"/>
+    <text x="344.00" y="53.09" fill="#263e58" font-size="21" font-weight="740" text-anchor="middle">7.67</text>
+  </g>
+</svg>
