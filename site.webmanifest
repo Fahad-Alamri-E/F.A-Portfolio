@@ -1,0 +1,21 @@
+{
+  "name": "Fahad Alamri \u2014 Engineering & Feasibility",
+  "short_name": "Fahad Alamri",
+  "start_url": "./",
+  "scope": "./",
+  "display": "browser",
+  "background_color": "#101925",
+  "theme_color": "#101925",
+  "icons": [
+    {
+      "src": "./assets/icons/app-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "./assets/icons/app-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
