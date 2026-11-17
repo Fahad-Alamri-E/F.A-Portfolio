@@ -26,7 +26,7 @@
  function cash(){
   const inv=+$('investment').value/100,op=+$('operating').value/100,year=+$('year').value;
   $('investment-value').value=Math.round(inv*100)+'% of baseline';$('operating-value').value=Math.round(op*100)+'% of baseline';$('year-value').value=year;
-  let cumulative=0;const scenario=baseline.map((_,i)=>{cumulative+=i===0?-3*inv:i===1?-179*inv:i===2?-194*inv:81.155*op+(i===20?35.8:0);return cumulative});
+  let cumulative=0;const scenario=baseline.map((_,i)=>{cumulative+=i===0?-3*inv:i===1?-179*inv:i===2?-194*inv:81.155*op+(i===20?35.8:0);return Math.round(cumulative*1e6)/1e6});
   const low=Math.floor(Math.min(...scenario,...baseline)/250)*250,high=Math.ceil(Math.max(...scenario,...baseline)/250)*250;
   const X=v=>75+v/20*480,Y=v=>280-(v-low)/(high-low)*235;
   let svg=text(75,22,'Cumulative cash flow · USD million');
