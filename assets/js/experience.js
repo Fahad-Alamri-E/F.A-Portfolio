@@ -9,8 +9,8 @@
  ['REFINE','Question. Adjust. Check again.','Assumptions → test → review ↺','Refine the approach, then return to the first balance.']];
  let index=0,paused=reduced.matches,timer=null;
  function board(n){index=n;const d=boardData[n];q('.thinking-studio').dataset.phase=n;q('#board-number').textContent=`0${n+1} / ${d[0]}`;q('#board-title').textContent=d[1];q('#board-equation').innerHTML=d[2];q('#board-caption').textContent=d[3];qa('[data-board]').forEach((b,i)=>b.setAttribute('aria-pressed',i===n?'true':'false'))}
- function state(){clearInterval(timer);q('#studio-pause').textContent=paused?'Play cycle':'Pause cycle';q('#studio-pause').setAttribute('aria-pressed',String(paused));q('.thinking-studio').classList.toggle('paused',paused);if(!paused&&!document.hidden)timer=setInterval(()=>board((index+1)%4),5000)}
- qa('[data-board]').forEach(b=>b.addEventListener('click',()=>{paused=true;board(+b.dataset.board);state()}));q('#studio-pause').addEventListener('click',()=>{paused=!paused;state()});document.addEventListener('visibilitychange',state);reduced.addEventListener('change',()=>{paused=reduced.matches;state();qa('.process-explorer').forEach(e=>setFlow(e,reduced.matches))});state();
+ function state(){clearInterval(timer);paused=reduced.matches||!window.PORTFOLIO_SETTINGS.heroAutoplay;q('.thinking-studio').classList.toggle('paused',paused);if(!paused&&!document.hidden)timer=setInterval(()=>board((index+1)%4),window.PORTFOLIO_SETTINGS.cycleSeconds*1000)}
+ document.addEventListener('visibilitychange',state);reduced.addEventListener('change',()=>{state();qa('.process-explorer').forEach(e=>setFlow(e,reduced.matches||!window.PORTFOLIO_SETTINGS.processAnimation))});state();
  const details={water:{
  intake:['Seawater intake','Feedwater enters the plant. Intake conditions influence pretreatment needs, environmental controls and operating reliability.'],
  pretreat:['Pretreatment','Suspended solids and fouling risks are managed before the membranes. The exact pretreatment train depends on seawater quality; the diagram does not claim a particular design for the simulated site.'],
@@ -33,11 +33,11 @@
  mix:['Mixing & compression','Hydrogen and nitrogen combine at a 3:1 molar ratio before compression and synthesis. Compressor duties connect process simulation to energy demand.'],
  reactor:['Haber–Bosch synthesis','Nitrogen reacts with hydrogen to produce ammonia: N₂ + 3H₂ → 2NH₃. Heat removal and operating conditions are key engineering considerations in the project.'],
  cool:['Product cooling','The report’s ammonia simulation includes downstream cooling. A further separation step is discussed as an option if impurities remain; it is not shown here as installed equipment.']}};
- function setFlow(e,pause){e.classList.toggle('flow-paused',pause);const b=q('.flow-toggle',e);b.textContent=pause?'Play flow':'Pause flow';b.setAttribute('aria-pressed',String(pause))}
+ function setFlow(e,pause){e.classList.toggle('flow-paused',pause)}
  qa('.process-explorer').forEach(e=>{
   const dialog=document.createElement('dialog');dialog.className='equipment-dialog';dialog.setAttribute('aria-label','Equipment details');dialog.innerHTML='<p class="eyebrow">PROCESS DETAIL</p><h3></h3><p class="dialog-description"></p><button type="button">Back to diagram</button>';e.append(dialog);q('button',dialog).addEventListener('click',()=>dialog.close());
-  setFlow(e,reduced.matches);
-  q('.flow-toggle',e).addEventListener('click',()=>setFlow(e,!e.classList.contains('flow-paused')));
+  setFlow(e,reduced.matches||!window.PORTFOLIO_SETTINGS.processAnimation);
+
   qa('[data-unit]',e).forEach(u=>{function activate(){const d=details[e.dataset.process][u.dataset.unit];qa('[data-unit]',e).forEach(n=>{n.classList.toggle('selected',n.dataset.unit===u.dataset.unit);n.setAttribute('aria-pressed',String(n.dataset.unit===u.dataset.unit))});const box=q('.unit-inspector',e);box.replaceChildren();const title=document.createElement('strong'),p=document.createElement('p');title.textContent=d[0];p.textContent=d[1];box.append(title,p);if(window.matchMedia('(max-width:600px)').matches&&typeof dialog.showModal==='function'){q('h3',dialog).textContent=d[0];q('.dialog-description',dialog).textContent=d[1];dialog.showModal()}}u.setAttribute('aria-pressed','false');u.addEventListener('click',activate);u.addEventListener('keydown',ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();activate()}})});
  });
  qa('[data-option]').forEach(b=>b.addEventListener('click',()=>{const isA=b.dataset.option==='a';qa('[data-option]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));q('#water-option-label').textContent=isA?'OPTION A / CONVENTIONAL SWRO':'OPTION B / FULLY EXPANDED MODULAR SWRO';q('#process-intensity').textContent=isA?'3.20':'3.05';q('#process-tariff').textContent=isA?'7.30':'7.67';q('#option-note').textContent=isA?'Full capacity from the start; lower modeled full-cost tariff than fully expanded B.':'Lower electricity intensity; the full-year expanded configuration still had a higher modeled full-cost tariff.'}));
