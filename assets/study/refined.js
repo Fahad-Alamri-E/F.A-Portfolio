@@ -14,36 +14,13 @@ for(let i=0;i<8;i++)for(const [rank,piece,white] of [[8,symbols[i],false],[7,'�
 }
 const states=[positions.slice()];
 for(const move of moves){const pos=states.at(-1).slice(),from=pos.indexOf(move.slice(0,2)),dest=move.slice(2),cap=pos.indexOf(dest);if(from<0)throw Error('Invalid game score');if(cap>=0)pos[cap]='';pos[from]=dest;states.push(pos)}
-// Illustrative one-dimensional profiles with constant transport properties.
-const laws = [
- {name:'Mass diffusion · Fick', formula:'Jₐ = −Dₐᵦ ∂cₐ/∂x', x:'x', y:'cₐ', rising:false, color:'#84ebcd', profile:'Concentration falls across a stagnant film.'},
- {name:'Momentum · Newton', formula:'Jₚ = −μ ∂u/∂y', x:'y', y:'u', rising:true, color:'#a9d9ff', profile:'Velocity rises from a fixed plate to a moving plate in steady Couette flow.'},
- {name:'Heat conduction · Fourier', formula:'q″ₓ = −k ∂T/∂x', x:'x', y:'T', rising:false, color:'#ffc987', profile:'Temperature falls across a steady, source-free plane wall.'}
-];
-function profile(law){
- const y1=law.rising?49:17, y2=law.rising?17:49;
- return `<svg viewBox="0 0 136 66" role="img" aria-label="${law.profile}"><path d="M22 10v43h100" fill="none" stroke="#a5b8bd"/><path d="M26 31h88 M68 13v40" fill="none" stroke="#49606a" stroke-dasharray="2 4"/><path d="M27 ${y1}L112 ${y2}" fill="none" stroke="${law.color}" stroke-width="2.5"/><circle cx="27" cy="${y1}" r="3" fill="${law.color}"/><circle cx="112" cy="${y2}" r="3" fill="${law.color}"/><g fill="#eef6f3" font-family="Georgia,serif" font-style="italic" font-size="14"><text x="3" y="16">${law.y}</text><text x="124" y="58">${law.x}</text></g></svg>`;
-}
-const heroPlot=document.createElement('div');
-heroPlot.className='law-profile';q('.transport').append(heroPlot);
 const scene=document.createElement('div');
 scene.className='game-scene';scene.setAttribute('aria-hidden','true');
 const caption=document.createElement('div');
-caption.className='scene-law';
+caption.className='reading-caption';
 scene.append(caption);document.body.prepend(scene);
-let lastLaw=-1;
-function showLaw(index){
- if(index===lastLaw)return;
- lastLaw=index;
- const law=laws[index], graph=profile(law);
- q('#law').textContent=law.name;q('#formula').textContent=law.formula;
- heroPlot.innerHTML=graph;
- caption.innerHTML='<div><span>'+law.name+'</span><strong>'+law.formula+'</strong></div><div class="profile-and-move">'+graph+'<small></small></div>';
- caption.style.setProperty('--law-color',law.color);
-}
-const story=['Opening · Challenge: convert variable electricity prices into a water tariff.','Development · Response: compare the conventional and modular SWRO cases.','Middlegame · Challenge: balance hydrogen production with synthesis demand.','Endgame · Response: trace the material balance from polished water to ammonia.'];
 let ply=0,paused=reduced.matches,visible=true,timer,frame;
-function render(n){ply=Math.max(0,Math.min(n,moves.length));states[ply].forEach((s,i)=>{const e=pieces[i];e.style.opacity=s?'1':'0';if(s)e.style.transform='translate('+files.indexOf(s[0])*100+'%,'+(8-Number(s[1]))*100+'%)'});showLaw(Math.floor(ply/3)%laws.length);q('#notation').textContent=ply?Math.ceil(ply/2)+(ply%2?'. ':'… ')+notation[ply-1]:'Starting position';board.setAttribute('aria-label','Immortal Game, '+q('#notation').textContent);q('#challenge').textContent=story[Math.min(3,Math.floor(ply/12))]}
+function render(n){ply=Math.max(0,Math.min(n,moves.length));states[ply].forEach((s,i)=>{const e=pieces[i];e.style.opacity=s?'1':'0';if(s)e.style.transform='translate('+files.indexOf(s[0])*100+'%,'+(8-Number(s[1]))*100+'%)'});q('#notation').textContent=ply?Math.ceil(ply/2)+(ply%2?'. ':'… ')+notation[ply-1]:'Starting position';board.setAttribute('aria-label','Immortal Game, '+q('#notation').textContent)}
 function clock(){clearInterval(timer);q('#toggle').textContent=paused?'Play':'Pause';if(!paused&&visible&&!document.hidden&&scrollY<2)timer=setInterval(()=>render((ply+1)%states.length),2200)}
 q('#toggle').onclick=()=>{paused=!paused;if(departure!==null)departure=ply;clock();queue()};for(const [id,d] of [['prev',-1],['next',1]])q('#'+id).onclick=()=>{paused=true;clock();render(ply+d);if(departure!==null)departure=ply;previous=-1;queue()};
 new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;clock()}).observe(hero);
@@ -66,6 +43,50 @@ function reserveHeader(){
 }
 const narrow=matchMedia('(max-width: 1099px)');
 const main=q('main');
+// Cache document positions. Opening a case or resizing invalidates them.
+const readingSections=[
+ ['.match-hero','Explore my work in water and energy.'],
+ ['#toolkit','See where I used each tool.'],
+ ['#training','Explore my training and reporting examples.'],
+ ['.executive','My experience and project results at a glance.'],
+ ['#work','Explore the two projects I worked on.'],
+ ['#sharakah','We compared two ways to desalinate seawater.'],
+ ['#water-process','Follow seawater from intake to city supply.'],
+ ['#mix','Change the power mix and compare costs.'],
+ ['#sharakah .lab','See how electricity prices affect water prices.'],
+ ['#sharakah .physical-lab','See how much power water delivery takes.'],
+ ['#power-to-x','We designed hydrogen production using renewable electricity.'],
+ ['#ptx-process','Follow the steps from water to ammonia.'],
+ ['#power-to-x .lab','See when the project earns back investment.'],
+ ['#power-to-x .physical-lab','See how much ammonia hydrogen can produce.'],
+ ['#experience','Explore my field and design experience.'],
+ ['#action','I helped keep construction sites dry.'],
+ ['#wetico','I drew water treatment diagrams at WETICO.'],
+ ['#education','My chemical engineering studies in Riyadh.'],
+ ['.closing','Get in touch about working together.'],
+ ['#contact','Choose how to reach me.']
+].map(([selector,message])=>({element:q(selector),message}));
+let ranges;
+function invalidateSections(){ranges=null;queue()}
+function describeSection(y,vh){
+ if(!ranges){
+  ranges=readingSections.flatMap(({element,message})=>{
+   if(!element||element.parentElement.closest('details:not([open])'))return [];
+   const bounds=element.getBoundingClientRect();
+   return bounds.height?[{top:bounds.top+y,bottom:bounds.bottom+y,message}]:[];
+  });
+ }
+ const focus=y+vh*.37;
+ let active=null, preceding=ranges[0];
+ for(const range of ranges){
+  if(range.top>focus)continue;
+  if(range.top>=preceding.top)preceding=range;
+  if(focus<range.bottom)active=range;
+ }
+ active=active||preceding;
+ if(focus>ranges[ranges.length-1].bottom || y+vh>=document.documentElement.scrollHeight-2)active=ranges[ranges.length-1];
+ if(active&&caption.textContent!==active.message)caption.textContent=active.message;
+}
 const moveMark=document.createElement('i');
 moveMark.className='arrival-square';echo.append(moveMark);
 function scrollScene(){
@@ -76,7 +97,7 @@ function scrollScene(){
    if(departure!==null){render(departure);departure=null;clock()}
    previous=-1;scene.style.visibility='hidden';board.style.opacity='1';
    hero.style.removeProperty('--scene-progress');hero.style.removeProperty('--drift');
-   main.style.removeProperty('--scene-cut');return;
+   return;
  }
  if(departure===null){departure=ply;clearInterval(timer)}
  const bounds=board.getBoundingClientRect();
@@ -86,7 +107,7 @@ function scrollScene(){
  // The desktop reading column leaves room for the full board and its profile.
  // On phones a window beneath the navigation reveals the upper part of the board.
  const rail=Math.min(520,vw*.30);
- const size=small?Math.min(vw*.77,vh*.68,510):Math.min(rail-22,vh*.59);
+ const size=small?Math.min(vw*.45,vh*.4,245):Math.min(rail-22,vh*.59);
  const x=small?-size*.10:vw-rail+(rail-size)/2;
  const yEnd=small?Math.max(68,vh*.085):Math.max(80,(vh-size-95)/2);
  const width=bounds.width+(size-bounds.width)*ease;
@@ -95,7 +116,6 @@ function scrollScene(){
  const n=paused||reduced.matches?departure:Math.min(moves.length,departure+Math.round(y/total*(moves.length-departure)));
  if(n!==previous){
    render(n);
-   caption.querySelector('small').textContent=n?q('#notation').textContent:'Start';
    echoPieces.forEach((piece,i)=>{piece.style.cssText=pieces[i].style.cssText});
    moveMark.hidden=!n;
    if(n){const square=moves[n-1].slice(2);moveMark.style.transform='translate('+files.indexOf(square[0])*100+'%,'+(8-Number(square[1]))*100+'%)'}
@@ -107,24 +127,22 @@ function scrollScene(){
  board.style.opacity=String(1-ease);
  echo.style.width=bounds.width+'px';
  echo.style.transform='translate3d('+left+'px,'+top+'px,0) scale('+width/bounds.width+')';
- const reveal=Math.min(220,Math.max(vh<590?130:178,vh*.245));
- // Keep the last move in the open part of the mobile background.
  const focus=n?moves[n-1].slice(2):'e4';
  const file=files.indexOf(focus[0])+.5, rank=8.5-Number(focus[1]);
- const cameraX=Math.min(0,Math.max(vw*.48-size,vw*.25-file*size/8));
- const cameraY=(reveal+60)/2-rank*size/8;
+ const cameraX=Math.min(6,Math.max(vw*.33-size,vw*.19-file*size/8));
+ const cameraY=72-rank*size/8;
  echo.style.translate=small?(cameraX-x)*ease+'px '+(cameraY-yEnd)*ease+'px':'none';
- caption.style.left=(small?vw*.51:vw-rail+12)+'px';
- caption.style.width=(small?vw*.47:rail-24)+'px';
- caption.style.top=(small?Math.min(yEnd+10,reveal-caption.offsetHeight-3):yEnd+size+12)+'px';
+ describeSection(y,vh);
+ caption.style.left=(small?vw*.41:vw-rail+12)+'px';
+ caption.style.width=(small?vw*.56:rail-24)+'px';
+ caption.style.top=(small?55:yEnd-54)+'px';
  caption.style.opacity=ease;
- const cut=small?Math.max(0,reveal*ease-main.getBoundingClientRect().top):0;
- main.style.setProperty('--scene-cut',cut+'px');
 }
 function queue(){if(!frame)frame=requestAnimationFrame(scrollScene)}
 addEventListener('scroll',queue,{passive:true});
-addEventListener('resize',()=>{reserveHeader();queue()});
-new ResizeObserver(queue).observe(main);
+addEventListener('resize',()=>{reserveHeader();invalidateSections()});
+new ResizeObserver(invalidateSections).observe(main);
+document.addEventListener('toggle',invalidateSections,true);
 reserveHeader();render(0);clock();queue();
 const menus=all('nav details');
 document.addEventListener('click',ev=>{menus.forEach(m=>{if(!m.contains(ev.target)||ev.target.closest('a'))m.open=false});const link=ev.target.closest('a[href="#wetico"],a[href="#action"]');if(link)q(link.hash).open=true});
