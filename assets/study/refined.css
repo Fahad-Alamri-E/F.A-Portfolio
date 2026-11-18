@@ -40,3 +40,58 @@ header nav{justify-content:space-around}.training-note dl{display:block}.trainin
 @media(prefers-reduced-motion:reduce){header,.chess-echo b{transition:none}}
 header.compact{padding-left:54px}header.compact nav{width:auto;max-width:100%;margin-left:auto}.chess-echo.docked{z-index:51}
 @media(max-width:650px){header.compact nav{width:100%;justify-content:space-between}}
+
+/* Scroll-linked chess study. The reading layer stays above the board. */
+.game-scene{position:fixed;inset:0;overflow:hidden;pointer-events:none;user-select:none;visibility:hidden;z-index:0;background:radial-gradient(ellipse at 87% 46%,#223d46 0%,#10212c 48%,#0c1722 100%)}
+.game-scene .chess-echo{visibility:inherit;position:absolute;z-index:0;border:2px solid #b8a47f;box-shadow:0 14px 32px #01090d77;background:conic-gradient(#3d6065 25%,#bfb69c 0 50%,#3d6065 0 75%,#bfb69c 0) 0 0/25% 25%}
+.chess-echo .arrival-square{position:absolute;width:12.5%;height:12.5%;inset:0 auto auto 0;box-shadow:inset 0 0 0 2px #ffd48d;background:#f6bc5c26}
+.game-scene .chess-echo b{z-index:1}
+.scene-law{position:absolute;display:flex;align-items:center;justify-content:space-between;gap:6px;border-top:1px solid var(--law-color);background:#10202cef;color:#f1eee2;padding:9px 10px;box-sizing:border-box}
+.scene-law span{display:block;color:var(--law-color);font-size:12px;line-height:1.3}
+.scene-law strong,.transport strong{font-family:Georgia,serif;font-style:italic;font-weight:500}
+.scene-law strong{display:block;font-size:clamp(17px,1.35vw,24px);line-height:1.5;white-space:nowrap}
+.scene-law svg{width:32%;max-width:130px}
+.replay .transport{display:grid;grid-template-columns:1fr 100px;gap:2px 10px;background:#0e1d27df;padding:9px 12px}
+.transport .law-profile{grid-column:2;grid-row:1/3}
+.law-profile svg{display:block;width:100%;height:auto}
+.match-hero:before{opacity:calc(1 - var(--scene-progress,0))}
+header{max-width:100%;margin-inline:auto;transition:max-width .34s ease,transform .34s ease,border-radius .34s ease,background-color .25s ease}
+header.compact{max-width:min(450px,calc(100% - 20px));transform:translateY(max(10px,env(safe-area-inset-top,0px)));border:1px solid #85d5cb;border-radius:32px;padding:3px 22px!important;min-height:44px;justify-content:center;background:linear-gradient(#253e4a,#101e2b 54%,#192e3b);box-shadow:inset 0 2px #bde4da21,0 4px 14px #050d16a8;backdrop-filter:none}
+header.compact::before,header.compact::after{content:'';position:absolute;width:3px;height:47%;top:26%;border-inline:1px solid #c6a573;pointer-events:none}
+header.compact::before{left:9px}header.compact::after{right:9px}
+header.compact nav{width:100%;margin:0;flex-wrap:nowrap;align-items:center;justify-content:space-between}
+header.compact nav a,header.compact nav summary{color:#ecf7f3}
+main{z-index:1;position:relative}
+@media(min-width:1100px){
+ main>.wrap:not(.match-hero){width:min(1240px,calc(100% - min(30vw,520px) - 64px));margin-left:max(32px,calc((100% - 1240px - min(30vw,520px))/2));margin-right:auto}
+}
+@media(max-width:1099px){
+ html{scroll-padding-top:clamp(188px,calc(24.5vh + 10px),230px)}
+ main{clip-path:inset(var(--scene-cut,0px) 0 0)}
+ .scene-law{display:block;padding:5px 8px 3px;border-radius:0 0 4px 4px}
+ .scene-law span{font-size:clamp(10px,2.8vw,14px)}
+ .scene-law strong{font-size:clamp(15px,3.8vw,20px);line-height:1.25}
+ .scene-law svg{display:block;width:90px;height:42px}
+ main>.wrap:not(.match-hero){background-color:#111f2bed;box-shadow:0 0 0 8px #111f2bed}
+ .match-hero>div,.replay{position:relative}
+ .replay .transport{grid-template-columns:1fr 88px}
+}
+@media(max-height:590px) and (max-width:1099px){
+ .scene-law{display:flex}.scene-law svg{width:30%;max-height:42px}
+}
+@media(prefers-reduced-motion:reduce){header,.game-scene b{transition:none}}
+
+@media(max-width:1099px) and (prefers-reduced-motion:no-preference){.game-scene .chess-echo{transition:translate .42s ease-out}}
+
+.scene-law .profile-and-move{width:34%;max-width:130px;text-align:right;color:#ffda97}
+.scene-law .profile-and-move svg{width:100%;display:block}
+.profile-and-move small{display:block;font:600 11px/1.2 ui-monospace,monospace}
+@media(max-width:1099px){
+ .scene-law .profile-and-move{width:100%;max-width:none;display:flex;gap:5px;align-items:center;justify-content:space-between}
+ .scene-law .profile-and-move svg{width:59%;height:42px}
+}
+@media(max-width:1099px) and (max-height:590px){
+ .scene-law .profile-and-move{display:block;width:31%}.scene-law .profile-and-move svg{width:100%}
+}
+
+:is(#board,.chess-echo) b svg{width:95%;height:95%}.ivory{--rim:#6c604c}.onyx{--rim:#7c9293}
