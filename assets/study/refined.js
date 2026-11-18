@@ -2,6 +2,10 @@
 (() => {
 const q=s=>document.querySelector(s), all=s=>Array.from(document.querySelectorAll(s));
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
+const sprite = new URL('navigation.svg', document.currentScript.src).href;
+function icon(name) {
+ return '<svg class="ui-icon icon-'+name+'" aria-hidden="true" focusable="false"><use href="'+sprite+'#'+name+'"></use></svg>';
+}
 const hero=q('.match-hero'),board=q('#board');
 const notation='e4 e5 f4 exf4 Bc4 Qh4+ Kf1 b5 Bxb5 Nf6 Nf3 Qh6 d3 Nh5 Nh4 Qg5 Nf5 c6 g4 Nf6 Rg1 cxb5 h4 Qg6 h5 Qg5 Qf3 Ng8 Bxf4 Qf6 Nc3 Bc5 Nd5 Qxb2 Bd6 Bxg1 e5 Qxa1+ Ke2 Na6 Nxg7+ Kd8 Qf6+ Nxf6 Be7#'.split(' ');
 const moves='e2e4 e7e5 f2f4 e5f4 f1c4 d8h4 e1f1 b7b5 c4b5 g8f6 g1f3 h4h6 d2d3 f6h5 f3h4 h6g5 h4f5 c7c6 g2g4 h5f6 h1g1 c6b5 h2h4 g5g6 h4h5 g6g5 d1f3 f6g8 c1f4 g5f6 b1c3 f8c5 c3d5 f6b2 f4d6 c5g1 e4e5 b2a1 f1e2 b8a6 f5g7 e8d8 f3f6 g8f6 d6e7'.split(' ');
@@ -41,6 +45,29 @@ function reserveHeader(){
  spacer.style.height=baseHeight+'px';
  header.classList.toggle('compact',was);
 }
+const mobile=matchMedia('(max-width: 800px)');
+const trigger=q('.mobile-menu'), nav=q('#portfolio-nav');
+const menus=all('#portfolio-nav details');
+function showMenu(open) {
+ header.classList.toggle('menu-open',open);
+ trigger.setAttribute('aria-expanded',String(open));
+ trigger.setAttribute('aria-label',open?'Close menu':'Open menu');
+ if(!open) menus.forEach(item=>item.open=false);
+}
+trigger.addEventListener('click',()=>showMenu(!header.classList.contains('menu-open')));
+document.addEventListener('click',event=>{
+ if(header.classList.contains('menu-open') && (!header.contains(event.target)||event.target.closest('nav a'))) showMenu(false);
+ menus.forEach(item=>{if(!item.contains(event.target)||event.target.closest('a'))item.open=false});
+ const link=event.target.closest('a[href="#wetico"],a[href="#action"]');
+ if(link)q(link.hash).open=true;
+});
+document.addEventListener('keydown',event=>{
+ if(event.key!=='Escape')return;
+ if(header.classList.contains('menu-open')) {showMenu(false);trigger.focus({preventScroll:true});return}
+ const item=menus.find(m=>m.open);
+ if(item){item.open=false;item.querySelector('summary').focus({preventScroll:true})}
+});
+mobile.addEventListener('change',()=>showMenu(false));
 const narrow=matchMedia('(max-width: 1099px)');
 const main=q('main');
 // Cache document positions. Opening a case or resizing invalidates them.
@@ -92,7 +119,15 @@ moveMark.className='arrival-square';echo.append(moveMark);
 function scrollScene(){
  frame=0;
  const y=Math.max(0,scrollY);
- header.classList.toggle('compact',y>28);
+ const compact=y>28;
+ if(header.classList.contains('compact')!==compact){
+  const fromNav=nav.contains(document.activeElement);
+  const fromButton=document.activeElement===trigger;
+  showMenu(false);
+  header.classList.toggle('compact',compact);
+  if(mobile.matches && compact && fromNav)trigger.focus({preventScroll:true});
+  if(mobile.matches && !compact && fromButton)nav.querySelector('summary').focus({preventScroll:true});
+ }
  if(y<2){
    if(departure!==null){render(departure);departure=null;clock()}
    previous=-1;scene.style.visibility='hidden';board.style.opacity='1';
@@ -107,9 +142,9 @@ function scrollScene(){
  // The desktop reading column leaves room for the full board and its profile.
  // On phones a window beneath the navigation reveals the upper part of the board.
  const rail=Math.min(520,vw*.30);
- const size=small?Math.min(vw*.45,vh*.4,245):Math.min(rail-22,vh*.59);
- const x=small?-size*.10:vw-rail+(rail-size)/2;
- const yEnd=small?Math.max(68,vh*.085):Math.max(80,(vh-size-95)/2);
+ const size=mobile.matches?Math.min(90,vw*.23):small?Math.min(vw*.45,vh*.4,245):Math.min(rail-22,vh*.59);
+ const x=mobile.matches?12:small?-size*.10:vw-rail+(rail-size)/2;
+ const yEnd=mobile.matches?5:small?Math.max(68,vh*.085):Math.max(80,(vh-size-95)/2);
  const width=bounds.width+(size-bounds.width)*ease;
  const left=bounds.left+(x-bounds.left)*ease,top=bounds.top+(yEnd-bounds.top)*ease;
  const total=Math.max(hero.offsetHeight,document.documentElement.scrollHeight-vh);
@@ -131,22 +166,29 @@ function scrollScene(){
  const file=files.indexOf(focus[0])+.5, rank=8.5-Number(focus[1]);
  const cameraX=Math.min(6,Math.max(vw*.33-size,vw*.19-file*size/8));
  const cameraY=72-rank*size/8;
- echo.style.translate=small?(cameraX-x)*ease+'px '+(cameraY-yEnd)*ease+'px':'none';
+ echo.style.translate=mobile.matches?'0px calc(env(safe-area-inset-top, 0px) * '+ease+')':small?(cameraX-x)*ease+'px '+(cameraY-yEnd)*ease+'px':'none';
  describeSection(y,vh);
- caption.style.left=(small?vw*.41:vw-rail+12)+'px';
- caption.style.width=(small?vw*.56:rail-24)+'px';
- caption.style.top=(small?55:yEnd-54)+'px';
+ caption.style.left=(mobile.matches?x+size+8:small?vw*.41:vw-rail+12)+'px';
+ caption.style.width=mobile.matches?'calc(100% - '+(x+size+8+76)+'px - env(safe-area-inset-right, 0px))':(small?vw*.56:rail-24)+'px';
+ caption.style.top=mobile.matches?'calc(env(safe-area-inset-top, 0px) + 9px)':(small?55:yEnd-54)+'px';
  caption.style.opacity=ease;
 }
 function queue(){if(!frame)frame=requestAnimationFrame(scrollScene)}
 addEventListener('scroll',queue,{passive:true});
-addEventListener('resize',()=>{reserveHeader();invalidateSections()});
+let layoutWidth=document.documentElement.clientWidth;
+addEventListener('resize',()=>{
+ const width=document.documentElement.clientWidth;
+ if(width!==layoutWidth){layoutWidth=width;reserveHeader()}
+ invalidateSections();
+});
+window.visualViewport?.addEventListener('resize',queue,{passive:true});
+new ResizeObserver(()=>{
+ if(!header.classList.contains('compact') && spacer.offsetHeight!==header.offsetHeight)
+  spacer.style.height=header.offsetHeight+'px';
+}).observe(header);
 new ResizeObserver(invalidateSections).observe(main);
 document.addEventListener('toggle',invalidateSections,true);
 reserveHeader();render(0);clock();queue();
-const menus=all('nav details');
-document.addEventListener('click',ev=>{menus.forEach(m=>{if(!m.contains(ev.target)||ev.target.closest('a'))m.open=false});const link=ev.target.closest('a[href="#wetico"],a[href="#action"]');if(link)q(link.hash).open=true});
-document.addEventListener('keydown',ev=>{if(ev.key==='Escape')menus.forEach(m=>{if(m.open){m.open=false;m.querySelector('summary').focus()}})});
 const tools=[
  ['X','Excel','#16774f','sharakah','Al-Sahil PPP','Electricity-price sensitivity, weighted costs and tariff modeling.'],
  ['BI','Power BI','#a3770e','sharakah','SHARAKAH','Turning reporting data into dashboards and communicating comparisons.'],
@@ -165,16 +207,16 @@ const tools=[
 ];
 const panel=document.createElement('dialog');panel.className='tool-dialog';document.body.append(panel);
 let origin,originY,target,opened=[];
-function restore(){if(target)target.classList.remove("tool-target");opened.forEach(e=>e.open=false);opened=[];origin.focus({preventScroll:true});window.scrollTo({top:originY,behavior:'instant'})}
+function restore(){origin.setAttribute("aria-expanded","false");if(target)target.classList.remove("tool-target");opened.forEach(e=>e.open=false);opened=[];origin.focus({preventScroll:true});window.scrollTo({top:originY,behavior:'instant'})}
 panel.onclose=restore;panel.onclick=e=>{if(e.target===panel)panel.close()};
-for(const [mark,name,c,id,label,skill] of tools){const btn=document.createElement('button');btn.style.setProperty('--brand',c);btn.innerHTML='<b>'+mark+'</b><span>'+name+' ↗</span>';q('.toolgrid').append(btn);btn.onclick=()=>{origin=btn;originY=scrollY;const dest=q('#'+id);const disclosure=dest.matches('details')?dest:dest.querySelector('details.project-expand');if(disclosure&&!disclosure.open){opened.push(disclosure);disclosure.open=true}target=dest;target.classList.add('tool-target');dest.scrollIntoView({behavior:reduced.matches?'instant':'smooth',block:'start'});panel.innerHTML='<article><button aria-label="Close and return">×</button><small>'+name+' → '+label+'</small><h3>'+name+'</h3><p>'+skill+'</p></article>';if(name==='Visio'){
- const switcher=document.createElement('button');switcher.className='also-used';switcher.textContent='View Power-to-X application →';panel.querySelector('article').append(switcher);
- switcher.onclick=()=>{const project=q('#power-to-x');const detail=project.querySelector('.project-expand');if(!detail.open){opened.push(detail);detail.open=true}target.classList.remove('tool-target');target=project;target.classList.add('tool-target');project.scrollIntoView({behavior:reduced.matches?'instant':'smooth'});panel.querySelector('small').textContent='Visio → Power-to-X';switcher.remove()};
+for(const [mark,name,c,id,label,skill] of tools){const btn=document.createElement('button');btn.style.setProperty('--brand',c);btn.setAttribute('aria-haspopup','dialog');btn.setAttribute('aria-expanded','false');btn.innerHTML='<b>' +mark+'</b><span>'+name+' '+icon('chevron')+'</span>';q('.toolgrid').append(btn);btn.onclick=()=>{origin=btn;btn.setAttribute("aria-expanded","true");originY=scrollY;const dest=q('#'+id);const disclosure=dest.matches('details')?dest:dest.querySelector('details.project-expand');if(disclosure&&!disclosure.open){opened.push(disclosure);disclosure.open=true}target=dest;target.classList.add('tool-target');dest.scrollIntoView({behavior:reduced.matches?'instant':'smooth',block:'start'});panel.innerHTML='<article><button aria-label="Close and return">×</button><small>'+name+' '+icon('right')+' '+label+'</small><h3>'+name+'</h3><p>'+skill+'</p></article>';if(name==='Visio'){
+ const switcher=document.createElement('button');switcher.className='also-used';switcher.innerHTML='View Power-to-X application '+icon('right');panel.querySelector('article').append(switcher);
+ switcher.onclick=()=>{const project=q('#power-to-x');const detail=project.querySelector('.project-expand');if(!detail.open){opened.push(detail);detail.open=true}target.classList.remove('tool-target');target=project;target.classList.add('tool-target');project.scrollIntoView({behavior:reduced.matches?'instant':'smooth'});panel.querySelector('small').innerHTML='Visio '+icon('right')+' Power-to-X';switcher.remove()};
  }
  panel.querySelector('button').onclick=()=>panel.close();panel.showModal()}}
 // AlSahil_3.0, Energy Mix tab. Gas is the balancing source.
 const mix=q('#mix-ui'),sources=['Solar PV','Combined-cycle gas','Nuclear'],rates=[.10,(.22-.33*.10)/.67,.24375],factors=[43,486,13];
-mix.innerHTML='<form><table><thead><tr><th>Supply</th><th>Share (%)</th><th>SAR/kWh</th></tr></thead><tbody>'+sources.map((s,i)=>'<tr><th>'+s+'</th><td><input aria-label="'+s+' share" type="range" min="0" max="100" step="1" value="'+[33,32,35][i]+'"><output>'+[33,32,35][i]+'%</output></td><td><input aria-label="'+s+' price" min="0" step="any" type="number" value="'+rates[i]+'"></td></tr>').join('')+'</tbody></table><button type="reset">Workbook mix ↺</button></form><div class="mix-result" aria-live="polite"></div><details><summary>Source and calculation</summary><p>AlSahil_3.0 · Energy Mix. Changing one share redistributes the remainder in proportion to the other two. When both are zero the remainder is split equally. Multiply the blended price change from 0.22 SAR/kWh by 3.20 (A) or 3.05 (expanded B) kWh/m³ and add the baseline full-cost tariff. Electricity life-cycle factors are 43, 486 and 13 g CO₂e/kWh for PV, gas and nuclear. These exclude other plant emissions.</p></details>';
+mix.innerHTML='<form><table><thead><tr><th>Supply</th><th>Share (%)</th><th>SAR/kWh</th></tr></thead><tbody>'+sources.map((s,i)=>'<tr><th>'+s+'</th><td><input aria-label="'+s+' share" type="range" min="0" max="100" step="1" value="'+[33,32,35][i]+'"><output>'+[33,32,35][i]+'%</output></td><td><input aria-label="'+s+' price" min="0" step="any" type="number" value="'+rates[i]+'"></td></tr>').join('')+'</tbody></table><button type="reset">Workbook mix '+icon('reset')+'</button></form><div class="mix-result" aria-live="polite"></div><details><summary>'+icon('chevron')+'Source and calculation</summary><p>AlSahil_3.0 · Energy Mix. Changing one share redistributes the remainder in proportion to the other two. When both are zero the remainder is split equally. Multiply the blended price change from 0.22 SAR/kWh by 3.20 (A) or 3.05 (expanded B) kWh/m³ and add the baseline full-cost tariff. Electricity life-cycle factors are 43, 486 and 13 g CO₂e/kWh for PV, gas and nuclear. These exclude other plant emissions.</p></details>';
 const inputs=[...mix.querySelectorAll('input')],result=mix.querySelector('.mix-result');
 const sliders=Array.from(mix.querySelectorAll('[type="range"]'));
 function rebalance(changed){
