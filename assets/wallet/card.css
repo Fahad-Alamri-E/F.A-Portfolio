@@ -1,0 +1,45 @@
+.wallet-card {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+  border-top: 1px solid var(--line);
+  padding-top: 1.25rem;
+}
+
+.wallet-card h2 {
+  margin: 0;
+  font: inherit;
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: normal;
+  color: var(--ink);
+}
+
+.wallet-card p {
+  margin: .25rem 0 0;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.wallet-card img {
+  display: block;
+  width: auto;
+  height: 44px;
+}
+
+.wallet-card a:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 4px;
+}
+
+@media (max-width: 600px) {
+  .wallet-card {
+    margin-top: 1rem;
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
