@@ -6,3 +6,10 @@ Renewable energy photo: Kindel Media / Pexels. https://www.pexels.com/photo/wind
 Photos used under the Pexels license: https://www.pexels.com/license/
 All photos are representative context images, not Fahad’s projects or employers.
 MP4 loops: gentle pan/zoom animations of the above still images and original engineering illustration; not documentary footage.
+
+Current project covers and chess photograph are AI-generated concept imagery.
+Saudi Arabia outline adapted from the world.geo.json repository, countries/SAU.geo.json.
+https://github.com/johan/world.geo.json/blob/master/countries/SAU.geo.json
+Baseline scientific figure design follows Chen Liu’s scientific-figure-making conventions.
+https://github.com/ChenLiu-1996/figures4papers/tree/main/scientific-figure-making
+Figures use the portfolio’s existing case and academic model values.
