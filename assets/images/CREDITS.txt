@@ -4,12 +4,19 @@ Process maps: original SVG drawings created from the project sources and technic
 Water treatment photo: Alexey Demidov / Pexels. https://www.pexels.com/photo/purifiers-at-a-water-treatment-plant-12726229/
 Renewable energy photo: Kindel Media / Pexels. https://www.pexels.com/photo/wind-turbines-and-solar-panels-during-daytime-9800092/
 Photos used under the Pexels license: https://www.pexels.com/license/
-All photos are representative context images, not Fahad’s projects or employers.
+The Pexels photographs are representative context images.
 MP4 loops: gentle pan/zoom animations of the above still images and original engineering illustration; not documentary footage.
 
-Current project covers and chess photograph are AI-generated concept imagery.
+The chess hero is AI-generated concept imagery.
 Saudi Arabia outline adapted from the world.geo.json repository, countries/SAU.geo.json.
 https://github.com/johan/world.geo.json/blob/master/countries/SAU.geo.json
 Baseline scientific figure design follows Chen Liu’s scientific-figure-making conventions.
 https://github.com/ChenLiu-1996/figures4papers/tree/main/scientific-figure-making
 Figures use the portfolio’s existing case and academic model values.
+
+Power-to-X cover: NEOM, green hydrogen plant at Oxagon. Industrial reference for the academic project.
+https://www.neom.com/en-us/newsroom/the-role-of-green-hydrogen-in-the-renewable-energy-mix
+action-dewatering.webp: ACTION International, Jeddah stormwater excavation. Company project reference.
+https://action-is.com/project/jeddah-stormwater-drainage-excavation-dewatering/
+wetico-wastewater.webp: WETICO, Najran sewage treatment plant. Company project reference.
+https://wetico.com/riyadh-water-supply-enhancement-nwc/

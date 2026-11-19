@@ -162,3 +162,22 @@ summary .plus .ui-icon {width:16px;height:16px}
 }
 .toolgrid button > span {display:inline-flex;align-items:center;justify-content:center;gap:3px}
 .toolgrid .icon-chevron {width:12px;height:12px}
+
+.model-viewport { display: contents; }
+
+@media (max-width: 700px), (max-height: 500px) and (max-width: 950px) and (pointer: coarse) {
+  .project-cover .cover-sculpture { height: auto; }
+  /* The cover illustrations have titles in their upper margins. Frame just the process on phones. */
+  .model-viewport {
+    display: block;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    aspect-ratio: 550 / 243;
+    flex: none;
+  }
+  #sharakah .model-viewport { aspect-ratio: 550 / 201; }
+  .model-viewport > img { position: absolute; inset: auto 0 0; }
+}
+
+.experience-photo img { filter: saturate(.85) brightness(.92); }
