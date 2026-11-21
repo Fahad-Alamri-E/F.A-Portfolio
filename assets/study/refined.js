@@ -48,12 +48,15 @@ function reserveHeader(){
 const mobile=matchMedia('(max-width: 800px)');
 const trigger=q('.mobile-menu'), nav=q('#portfolio-nav');
 const menus=all('#portfolio-nav details');
+header.classList.add('menu-ready');
 function showMenu(open) {
  header.classList.toggle('menu-open',open);
+ nav.inert=mobile.matches&&!open;
  trigger.setAttribute('aria-expanded',String(open));
  trigger.setAttribute('aria-label',open?'Close menu':'Open menu');
  if(!open) menus.forEach(item=>item.open=false);
 }
+showMenu(false);
 trigger.addEventListener('click',()=>showMenu(!header.classList.contains('menu-open')));
 document.addEventListener('click',event=>{
  if(header.classList.contains('menu-open') && (!header.contains(event.target)||event.target.closest('nav a'))) showMenu(false);
@@ -121,12 +124,8 @@ function scrollScene(){
  const y=Math.max(0,scrollY);
  const compact=y>28;
  if(header.classList.contains('compact')!==compact){
-  const fromNav=nav.contains(document.activeElement);
-  const fromButton=document.activeElement===trigger;
-  showMenu(false);
+  if(!mobile.matches) showMenu(false);
   header.classList.toggle('compact',compact);
-  if(mobile.matches && compact && fromNav)trigger.focus({preventScroll:true});
-  if(mobile.matches && !compact && fromButton)nav.querySelector('summary').focus({preventScroll:true});
  }
  if(y<2){
    if(departure!==null){render(departure);departure=null;clock()}

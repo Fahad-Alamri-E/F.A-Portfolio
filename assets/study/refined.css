@@ -120,45 +120,51 @@ summary .plus .ui-icon {width:16px;height:16px}
   border-radius:50%;border-color:#85d5cb;background:#152c39;box-shadow:0 3px 12px #05101a66;
  }
  header .brand,header nav {pointer-events:auto}
+ header .brand > span:last-child {display:inline}
  header.compact .brand {visibility:hidden;display:inline-flex;pointer-events:none}
- header .mobile-menu {
+ header.menu-ready .mobile-menu {
   position:absolute;top:var(--button-top);right:var(--button-right);width:48px;height:48px;
-  display:grid;place-items:center;border:0;border-radius:50%;padding:0;background:transparent;
-  color:#b5eee1;cursor:pointer;visibility:hidden;opacity:0;pointer-events:none;
-  transition:opacity .16s ease,visibility .16s;
+  display:grid;place-items:center;border:1px solid #85d5cb;border-radius:50%;padding:0;
+  background:#152c39;color:#b5eee1;cursor:pointer;pointer-events:auto;
  }
- header.compact .mobile-menu {visibility:visible;opacity:1;pointer-events:auto}
+ header.compact.menu-ready .mobile-menu {border-color:transparent;background:transparent}
  .mobile-menu .ui-icon {width:21px;height:21px;grid-area:1 / 1}
  .mobile-menu .icon-close,.menu-open .mobile-menu .icon-menu {opacity:0}
  .menu-open .mobile-menu .icon-close {opacity:1}
- header.compact nav {
-  position:absolute;top:calc(var(--button-top) + 56px);right:var(--button-right);
-  width:min(248px,calc(100vw - 32px));max-height:calc(100vh - var(--button-top) - 80px);
-  max-height:calc(100dvh - var(--button-top) - env(safe-area-inset-bottom,0px) - 74px);
-  overflow:auto;overscroll-behavior:contain;display:flex!important;flex-direction:column;
-  align-items:stretch;justify-content:flex-start;flex-wrap:nowrap;gap:0!important;
-  padding:6px;border:1px solid #587c85;border-radius:14px;background:#132531;box-shadow:0 8px 24px #060f1c88;
-  opacity:0;visibility:hidden;pointer-events:none;transform:translateY(-4px);
-  transition:opacity .16s ease,transform .16s ease,visibility .16s;
+ header.menu-ready nav {
+  position:absolute;top:calc(var(--button-top) + 56px);left:0;right:0;box-sizing:border-box;
+  width:min(450px,calc(100% - max(12px,env(safe-area-inset-left,0px)) - max(12px,env(safe-area-inset-right,0px))));max-width:none;
+  display:flex!important;flex-direction:row;align-items:center;justify-content:space-between;flex-wrap:nowrap;
+  gap:2px!important;margin-inline:auto;padding:2px clamp(7px,2vw,16px);
+  border:1px solid #85d5cb;border-radius:32px;
+  background:linear-gradient(#253e4a,#101e2b 54%,#192e3b);
+  box-shadow:inset 0 2px #bde4da21,0 4px 14px #050d16a8;
+  opacity:0;visibility:hidden;pointer-events:none;transform:translateY(-9px);
+  transition:opacity .22s ease,transform .24s ease;
  }
- header.compact.menu-open nav {opacity:1;visibility:visible;pointer-events:auto;transform:none}
- header.compact nav summary,header.compact nav a {
-  display:flex;align-items:center;gap:.4rem;padding:8px 12px;min-height:44px;
-  font-size:15px;line-height:1.25;border-radius:8px;
+ header.menu-ready.menu-open nav {opacity:1;visibility:visible;pointer-events:auto;transform:none}
+ header.menu-ready nav :is(a,summary) {
+  display:flex;align-items:center;min-height:42px;box-sizing:border-box;
+  padding:6px clamp(3px,1.35vw,9px);color:#ecf7f3;font-size:clamp(12px,3.4vw,14px);
+  line-height:1.2;border-radius:22px;white-space:nowrap;
  }
- header.compact nav summary {flex-direction:row-reverse;justify-content:space-between}
- header.compact nav details>div {
-  position:static;min-width:0;padding:0 0 4px 10px;border:0;background:transparent;gap:0;
+ header.menu-ready nav .icon-chevron {width:.8em;margin-inline-end:.28em}
+ header.menu-ready nav details > div {
+  top:calc(100% + 7px);left:0;right:auto;min-width:145px;padding:4px;
+  max-height:calc(100vh - var(--button-top) - 118px);
+  max-height:calc(100dvh - var(--button-top) - env(safe-area-inset-bottom,0px) - 118px);
+  overflow:auto;overscroll-behavior:contain;
+  border:1px solid #587c85;border-radius:14px;background:#132531;box-shadow:0 8px 24px #060f1c88;
  }
- header.compact nav details>div a {color:#a8d9ce;font-size:14px}
- header.compact nav :is(a,summary):hover {background:#203a47}
- header.compact nav :is(a,summary):focus-visible,.mobile-menu:focus-visible {outline-offset:-3px}
+ header.menu-ready nav details > div a {border-radius:9px;padding-inline:9px;color:#b8e6dc}
+ header.menu-ready nav :is(a,summary):hover {background:#203a47}
+ header.menu-ready nav :is(a,summary):focus-visible,.mobile-menu:focus-visible {outline-offset:-3px}
  .game-scene {height:calc(env(safe-area-inset-top,0px) + 102px)}
  .game-scene .reading-caption {min-height:48px;font-size:clamp(12px,3.3vw,15px)}
  .game-scene .chess-echo {transition:none}
 }
 @media (prefers-reduced-motion:reduce) {
- header::before,header .mobile-menu,header.compact nav,.icon-chevron {transition:none}
+ header::before,header .mobile-menu,header.menu-ready nav,.icon-chevron {transition:none}
 }
 .toolgrid button > span {display:inline-flex;align-items:center;justify-content:center;gap:3px}
 .toolgrid .icon-chevron {width:12px;height:12px}
@@ -181,3 +187,7 @@ summary .plus .ui-icon {width:16px;height:16px}
 }
 
 .experience-photo img { filter: saturate(.85) brightness(.92); }
+
+
+.brand-emblem { display:block; flex:none; }
+.brand-portfolio { color:var(--teal); letter-spacing:.04em; }
