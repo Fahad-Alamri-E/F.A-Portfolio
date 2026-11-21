@@ -10,20 +10,30 @@
 }
 
 .wallet-art {
-  box-sizing: border-box;
   width: min(100%, 32rem);
-  overflow: hidden;
-  border: 1px solid #627087;
-  border-radius: .875rem;
-  background: #13243a;
+  color: #faf0dd;
+  background: #112b40;
 }
-
+.wallet-identity {
+  padding: 1.1rem 1.3rem .2rem;
+}
+.wallet-art .wallet-identity h2 {
+  margin: 0;
+  font: 400 clamp(1.7rem, 4vw, 2.5rem)/1.05 "Times New Roman", Times, serif;
+  letter-spacing: -.025em;
+  color: inherit;
+}
+.wallet-art .wallet-identity p {
+  margin: .25rem 0 0;
+  font: 400 clamp(.9rem, 2vw, 1.05rem)/1.25 "Times New Roman", Times, serif;
+  color: inherit;
+}
 .wallet-art img {
   display: block;
   width: 100%;
   height: auto;
+  mask-image: linear-gradient(to bottom, transparent, black 9%);
 }
-
 .wallet-save { max-width: 15rem; }
 .wallet-save p { font: 400 1rem/1.4 "Times New Roman", Times, serif; margin: 0 0 .75rem; color: var(--ink); }
 .wallet-save a img { display: block; height: 44px; width: auto; }
