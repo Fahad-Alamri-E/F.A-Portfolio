@@ -10,77 +10,26 @@
 }
 
 .wallet-art {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
   box-sizing: border-box;
   width: min(100%, 32rem);
-  min-height: 14rem;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 1.35rem 1.6rem 1.85rem;
+  overflow: hidden;
   border: 1px solid #627087;
   border-radius: .875rem;
-  color: #f5ebd8;
-  background: linear-gradient(126deg, #14233b, #101c31 64%, #1e324e);
+  background: #13243a;
 }
 
-.wallet-art::before {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  inset: 0;
-  background: linear-gradient(127deg, transparent 0 69%, #8094aa55 69% 69.3%,
-    #203750 69.3% 74%, #2f4760 74% 78%, #172a43 78% 83%, #d8c7a8 83% 84.1%,
-    #253956 84.1% 87%, #172941 87%);
-  mask-image: linear-gradient(to bottom, black 15%, transparent 88%);
-}
-
-.wallet-art::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 9px;
-  background: linear-gradient(135deg, #dfcfb0 25%, transparent 25%) 0 0 / 18px 18px repeat-x,
-    linear-gradient(225deg, #dfcfb0 25%, transparent 25%) 0 0 / 18px 18px repeat-x;
-  opacity: .75;
-}
-
-.wallet-art .wallet-knight {
+.wallet-art img {
   display: block;
-  height: 4.5rem;
-  width: auto;
-  max-width: 100%;
-  object-fit: contain;
-  margin-left: -.3rem;
-}
-
-.wallet-art h2 {
-  font: 400 clamp(2.1rem, 4.2vw, 3.2rem)/1.06 "Times New Roman", Times, serif;
-  letter-spacing: -.035em;
-  margin: 0;
-  color: #fbf3e4;
-}
-
-.wallet-art p, .wallet-save p {
-  font: 400 1rem/1.4 "Times New Roman", Times, serif;
-  color: #efe4cd;
-  margin: .35rem 0 0;
+  width: 100%;
+  height: auto;
 }
 
 .wallet-save { max-width: 15rem; }
-.wallet-save p { margin: 0 0 .75rem; color: var(--ink); }
+.wallet-save p { font: 400 1rem/1.4 "Times New Roman", Times, serif; margin: 0 0 .75rem; color: var(--ink); }
 .wallet-save a img { display: block; height: 44px; width: auto; }
 .wallet-save a:focus-visible { outline: 2px solid var(--teal); outline-offset: 4px; }
 
 @media (max-width: 600px) {
   .wallet-card { margin-top: 1rem; gap: 1rem; flex-direction: column; align-items: stretch; }
-  .wallet-art { min-height: 12.5rem; padding: 1rem 1.15rem 1.5rem; }
-  .wallet-art .wallet-knight { height: 3.9rem; }
   .wallet-save { max-width: none; }
 }

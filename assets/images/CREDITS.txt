@@ -14,9 +14,18 @@ Baseline scientific figure design follows Chen Liu’s scientific-figure-making 
 https://github.com/ChenLiu-1996/figures4papers/tree/main/scientific-figure-making
 Figures use the portfolio’s existing case and academic model values.
 
-Power-to-X cover: NEOM, green hydrogen plant at Oxagon. Industrial reference for the academic project.
+Earlier Oxagon photograph: NEOM, green hydrogen plant at Oxagon.
 https://www.neom.com/en-us/newsroom/the-role-of-green-hydrogen-in-the-renewable-energy-mix
 action-dewatering.webp: ACTION International, Jeddah stormwater excavation. Company project reference.
 https://action-is.com/project/jeddah-stormwater-drainage-excavation-dewatering/
 wetico-wastewater.webp: WETICO, Najran sewage treatment plant. Company project reference.
 https://wetico.com/riyadh-water-supply-enhancement-nwc/
+
+Power-to-X cover: Saudi Vision 2030, Oxagon industrial port concept rendering.
+https://www.vision2030.gov.sa/en/explore/projects/oxagon
+Sharakah cover: SHARAKAT, Yanbu 4 reverse osmosis membrane hall. Reference for the Al-Sahil case study.
+https://www.sharakat.com.sa/company-portfolio/yanbu-4/
+
+Earlier Sharakah photograph: El Prat membrane hall by James Grellier, CC BY-SA 3.0. Cropped and resized.
+https://commons.wikimedia.org/wiki/File:Reverse_osmosis_desalination_plant.JPG
+https://creativecommons.org/licenses/by-sa/3.0/
