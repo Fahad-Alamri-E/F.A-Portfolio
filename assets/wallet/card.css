@@ -12,10 +12,13 @@
 .wallet-art {
   width: min(100%, 32rem);
   color: #faf0dd;
-  background: #112b40;
+  background: #13243a url("../brand/card-diagonals.svg") center / 100% 100% no-repeat;
+  box-sizing: border-box;
+  padding: 0 3% clamp(.65rem, 1.5vw, 1rem);
+  text-align: center;
 }
 .wallet-identity {
-  padding: 1.1rem 1.3rem .2rem;
+  padding: clamp(.85rem, 1.7vw, 1.3rem) 0 .65rem;
 }
 .wallet-art .wallet-identity h2 {
   margin: 0;
@@ -32,7 +35,7 @@
   display: block;
   width: 100%;
   height: auto;
-  mask-image: linear-gradient(to bottom, transparent, black 9%);
+
 }
 .wallet-save { max-width: 15rem; }
 .wallet-save p { font: 400 1rem/1.4 "Times New Roman", Times, serif; margin: 0 0 .75rem; color: var(--ink); }
