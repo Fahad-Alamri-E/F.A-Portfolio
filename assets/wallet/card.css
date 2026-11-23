@@ -10,33 +10,43 @@
 }
 
 .wallet-art {
+  position: relative;
+  container-type: inline-size;
   width: min(100%, 32rem);
-  color: #faf0dd;
-  background: #13243a url("../brand/card-diagonals.svg") center / 100% 100% no-repeat;
+  aspect-ratio: 660 / 386;
   box-sizing: border-box;
-  padding: 0 3% clamp(.65rem, 1.5vw, 1rem);
+  overflow: hidden;
+  border-radius: 12px;
+  color: #f7efdf;
+  background: #13243a url("../brand/card-diagonals.svg") center / 100% 100% no-repeat;
   text-align: center;
 }
-.wallet-identity {
-  padding: clamp(.85rem, 1.7vw, 1.3rem) 0 .65rem;
+.wallet-art .wallet-identity h2,
+.wallet-art .wallet-identity p {
+  position: absolute;
+  width: 100%;
+  margin: 0;
+  font-family: "Times New Roman", Times, serif;
+  font-weight: 400;
+  line-height: 1.12;
+  letter-spacing: normal;
+  color: inherit;
 }
 .wallet-art .wallet-identity h2 {
-  margin: 0;
-  font: 400 clamp(1.7rem, 4vw, 2.5rem)/1.05 "Times New Roman", Times, serif;
-  letter-spacing: -.025em;
-  color: inherit;
+  top: 5.8%;
+  font-size: 7.72cqw;
 }
 .wallet-art .wallet-identity p {
-  margin: .25rem 0 0;
-  font: 400 clamp(.9rem, 2vw, 1.05rem)/1.25 "Times New Roman", Times, serif;
-  color: inherit;
+  top: 22%;
+  font-size: 3.18cqw;
 }
 .wallet-art img {
-  display: block;
-  width: 69%;
-  height: auto;
-  margin: .3rem auto .55rem;
-
+  position: absolute;
+  left: 18.18%;
+  top: 33.16%;
+  width: 63.64%;
+  height: 59.59%;
+  object-fit: contain;
 }
 .wallet-save { max-width: 15rem; }
 .wallet-save p { font: 400 1rem/1.4 "Times New Roman", Times, serif; margin: 0 0 .75rem; color: var(--ink); }
